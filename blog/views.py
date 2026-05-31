@@ -7,13 +7,13 @@ posts = [
         'author': 'John Doe',
         'title': 'Blog Post 1',
         'content': 'First post content',
-        'date_posted': 'August 27, 2024'
+        'created_at': 'August 27, 2024'
     },
     {
         'author': 'Jane Doe',
         'title': 'Blog Post 2',
         'content': 'Second post content',
-        'date_posted': 'August 28, 2024'
+        'created_at': 'August 28, 2024'
     }
 ]
 
