@@ -1,0 +1,17 @@
+{%
+    load crispy_forms_tags
+%}
+
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Log Out</legend>
+            <p>Are you sure you want to log out?</p>
+        </fieldset>
+        <div class="form-group mt-3">
+            <button class="btn btn-outline-danger" type="submit">Yes, Log Out</button>
+            <a class="btn btn-outline-secondary" href="{% url 'blog-home' %}">No, Cancel</a>
+        </div>
+    </form>
+</div>
