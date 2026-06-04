@@ -43,19 +43,19 @@
             </div>
             <!-- Navbar Right Side -->
             <!-- Navbar Right Side -->
-<div class="navbar-nav">
+      <div class="navbar-nav">
 
     {% if user.is_authenticated %}
 
-        {% comment %} <a class="nav-item nav-link" href="{% url 'profile' %}">
+        <a class="nav-item nav-link" href="{% url 'profile' %}">
             Profile
-        </a> {% endcomment %}
+        </a>
 
-        <form action="{% url 'logout' %}" method="POST" class="d-inline">
+        <form action="{% url 'logout' %}" method="POST" class="d-flex m-0 p-0">
             {% csrf_token %}
             <button
                 type="submit"
-                class="nav-item nav-link btn btn-link p-0 border-0">
+                class="nav-link btn btn-link p-0 m-0 text-decoration-none">
                 Logout
             </button>
         </form>
