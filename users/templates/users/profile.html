@@ -1,0 +1,56 @@
+{% extends "blog/base.html" %} {% load crispy_forms_tags %} {% block content %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 text-center">
+          <!-- Profile Header -->
+          <h3 class="mb-3">👤 My Profile</h3>
+
+          <hr />
+
+          <!-- User Info -->
+          <div class="mb-3">
+            <h5 class="text-muted">Username</h5>
+            <p class="fs-5 fw-semibold">{{ user.username }}</p>
+          </div>
+
+          <div class="mb-3">
+            <h5 class="text-muted">Email</h5>
+            <p class="fs-5">{{ user.email }}</p>
+          </div>
+
+          <div class="mb-3">
+            <h5 class="text-muted">Account Status</h5>
+            <p>
+              {% if user.is_active %}
+              <span class="badge bg-success">Active</span>
+              {% else %}
+              <span class="badge bg-danger">Inactive</span>
+              {% endif %}
+            </p>
+          </div>
+
+          <hr />
+
+          <!-- Actions -->
+          <div class="d-grid gap-2">
+            <a
+              href="{% url 'password_change' %}"
+              class="btn btn-outline-primary"
+            >
+              Change Password
+            </a>
+
+            <a href="{% url 'blog-home' %}" class="btn btn-outline-secondary">
+              Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
