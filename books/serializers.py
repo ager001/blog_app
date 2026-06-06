@@ -60,3 +60,16 @@ class BookSerializer(serializers.ModelSerializer):
         raise serializers.ValidationError("Book with this title already exists")
 
       return attrs
+  
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['author'] = {
+            'name': instance.author.name if instance.author else None,
+            'email': instance.author.email if instance.author else None
+        }
+        representation['publisher'] = {
+            'name': instance.publisher.name if instance.publisher else None,
+            'address': instance.publisher.address if instance.publisher else None,
+        }
+        return representation
+    
