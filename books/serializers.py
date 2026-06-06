@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, Publisher
+from .models import Book, Publisher, Author
 
 
 
@@ -10,9 +10,27 @@ class PublisherSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AuthorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Author
+        fields = ['name','email']
+        
+        
+
 class BookSerializer(serializers.ModelSerializer):
     
+    # 🔵 READ: full nested objects
+    author_detail = AuthorSerializer(source='author', read_only=True)
     publisher_detail = PublisherSerializer(source='publisher', read_only=True)
+    
+    
+    # 🟢 WRITE: only IDs
+    author = serializers.PrimaryKeyRelatedField(
+        queryset=Author.objects.all(),
+        write_only=True
+    )
+    
     publisher = serializers.PrimaryKeyRelatedField(
         queryset=Publisher.objects.all(),
         write_only=True
@@ -20,7 +38,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'price', 'publisher', 'publisher_detail']
+        fields = ['id', 'title', 'author', 'price', 'publisher', 'publisher_detail', 'author_detail']
 
     # ✅ Field-level validation (ONLY title)
     def validate_title(self, value):
@@ -34,14 +52,11 @@ class BookSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Price must be greater than zero")
         return value
 
-    # ✅ Object-level validation (multiple fields)
+   
     def validate(self, attrs):
-        title = attrs.get('title', getattr(self.instance, 'title', None))
-        author = attrs.get('author', getattr(self.instance, 'author', None))
+      title = attrs.get('title')
 
-        if title == author:
-            raise serializers.ValidationError(
-                "Title and author cannot be the same"
-            )
+      if Book.objects.filter(title=title).exists():
+        raise serializers.ValidationError("Book with this title already exists")
 
-        return attrs
+      return attrs
