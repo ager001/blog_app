@@ -20,7 +20,23 @@ class Author(models.Model):
         return self.name
 
 class Book(models.Model):
-    title = models.CharField(max_length=200)
+    
+    
+    FICTION = 'Fiction'
+    NON_FICTION = 'Non-Fiction'
+    SCIENCE = 'Science'
+    HISTORY = 'History'
+
+    CATEGORY_CHOICES = [
+        (FICTION, 'Fiction'),
+        (NON_FICTION, 'Non-Fiction'),
+        (SCIENCE, 'Science'),
+        (HISTORY, 'History'),
+    ]
+    
+    
+    title = models.CharField(max_length=200, unique=True)
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     author = models.CharField(max_length=100)
     published_date = models.DateField()
     price = models.DecimalField(max_digits=13, decimal_places=2)
