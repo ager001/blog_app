@@ -1,53 +1,33 @@
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import (
-    ListModelMixin,
-    CreateModelMixin,
-    RetrieveModelMixin,
-    DestroyModelMixin, 
-    UpdateModelMixin
+from rest_framework.generics import (
+    ListCreateAPIView,              # GET (list) + POST (create)
+    RetrieveUpdateDestroyAPIView    # GET (single) + PUT/PATCH + DELETE
 )
-from rest_framework.response import Response
 
 from .models import Book
 from .serializers import BookSerializer
 
-class BookListCreateAPIView(
-    ListModelMixin,
-    CreateModelMixin,
-    GenericAPIView,
-    
-):
+
+#Handles: GET all books + POST new book
+class BookListCreateAPIView(ListCreateAPIView):
+    """
+    Combined view for:
+    - GET /books/      → list all books
+    - POST /books/     → create a new book
+    """
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    # GET /books/
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
-    # POST /books/
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-    
-    
-    
-    
-class BookDetailAPIView(
-    RetrieveModelMixin,
-    DestroyModelMixin,
-    UpdateModelMixin,
-    GenericAPIView
-):
+# Handles: GET one book + UPDATE + DELETE
+class BookDetailAPIView(RetrieveUpdateDestroyAPIView):
+    """
+    Combined view for:
+    - GET /books/1/    → retrieve one book
+    - PUT /books/1/    → full update
+    - PATCH /books/1/  → partial update
+    - DELETE /books/1/ → delete book
+    """
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-
-    # GET /books/1/
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    # DELETE /books/1/
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
-    # PATCH /books/1/
-    def patch(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
