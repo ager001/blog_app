@@ -34,6 +34,9 @@ class BookSerializer(serializers.ModelSerializer):
         queryset=Publisher.objects.all(),
         write_only=True
     )
+    
+    published_date = serializers.DateField(format="%Y-%m-%d", read_only=True)
+    
 
     class Meta:
         model = Book
@@ -49,7 +52,8 @@ class BookSerializer(serializers.ModelSerializer):
 
             # read fields
             'author_detail',
-            'publisher_detail'
+            'publisher_detail',
+            'published_date',
         ]
 
     # VALIDATION

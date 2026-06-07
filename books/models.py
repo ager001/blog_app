@@ -37,7 +37,7 @@ class Book(models.Model):
     
     title = models.CharField(max_length=200, unique=True)
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default=FICTION)
-    published_date = models.DateField()
+    published_date = models.DateField(auto_now_add=True)
     price = models.DecimalField(max_digits=13, decimal_places=2)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE, null=True,
