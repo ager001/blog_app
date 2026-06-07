@@ -1,35 +1,53 @@
 from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import (
+    ListModelMixin,
+    CreateModelMixin,
+    RetrieveModelMixin,
+    DestroyModelMixin, 
+    UpdateModelMixin
+)
 from rest_framework.response import Response
 
 from .models import Book
 from .serializers import BookSerializer
 
-
-class BookListGenericAPIView(GenericAPIView):
+class BookListCreateAPIView(
+    ListModelMixin,
+    CreateModelMixin,
+    GenericAPIView,
+    
+):
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    def get(self, request):
+    # GET /books/
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-        books = self.get_queryset()
-
-        serializer = self.get_serializer(
-            books,
-            many=True
-        )
-
-        return Response(serializer.data)
+    # POST /books/
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
     
     
-class BookDetailGenericAPIView(GenericAPIView):
     
+    
+class BookDetailAPIView(
+    RetrieveModelMixin,
+    DestroyModelMixin,
+    UpdateModelMixin,
+    GenericAPIView
+):
+
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    
-    def get(self, request, pk):
-        
-        book = self.get_object()
-        serializer = self.get_serializer(book)
-        return Response(serializer.data)
-    
+
+    # GET /books/1/
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    # DELETE /books/1/
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+    # PATCH /books/1/
+    def patch(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
