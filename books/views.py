@@ -5,7 +5,7 @@ from .models import Book
 from .serializers import BookSerializer
 
 
-class BookListAPIView(GenericAPIView):
+class BookListGenericAPIView(GenericAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -20,3 +20,16 @@ class BookListAPIView(GenericAPIView):
         )
 
         return Response(serializer.data)
+    
+    
+class BookDetailGenericAPIView(GenericAPIView):
+    
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    
+    def get(self, request, pk):
+        
+        book = self.get_object()
+        serializer = self.get_serializer(book)
+        return Response(serializer.data)
+    
