@@ -3,6 +3,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+from rest_framework.views import APIView
+from django.contrib.auth.models import User
+
+
 from .models import Book
 from .serializers import BookSerializer
 
@@ -30,3 +34,22 @@ class BookViewSet(ModelViewSet):
         cheapest_book = Book.objects.order_by('price').first()
         serializer = self.get_serializer(cheapest_book)
         return Response(serializer.data)
+    
+
+class SuperUserListView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        users = User.objects.filter(is_superuser=True)
+
+        data = [
+            {
+                "username": user.username,
+                "email": user.email,
+                "is_staff": user.is_staff,
+                "date_joined": user.date_joined
+            }
+            for user in users
+        ]
+
+        return Response(data)    
