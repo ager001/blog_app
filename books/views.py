@@ -12,3 +12,9 @@ class BookViewSet(ModelViewSet):
     
     # 🔐 Default: only logged-in users can view
     permission_classes = [IsAuthenticated]
+    
+     # 👇 Override permissions for unsafe actions
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
