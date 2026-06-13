@@ -9,3 +9,6 @@ from .serializers import BookSerializer
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    
+    # 🔐 Default: only logged-in users can view
+    permission_classes = [IsAuthenticated]
