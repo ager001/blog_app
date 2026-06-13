@@ -18,3 +18,15 @@ class BookViewSet(ModelViewSet):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsAdminUser()]
         return [IsAuthenticated()]
+    
+    @action(detail=False, methods=['get'])
+    def recent(self, request):
+        recent_books = Book.objects.order_by('-published_date')[:5]
+        serializer = self.get_serializer(recent_books, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def cheapest(self, request):
+        cheapest_book = Book.objects.order_by('price').first()
+        serializer = self.get_serializer(cheapest_book)
+        return Response(serializer.data)
