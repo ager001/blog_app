@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from books.views import SuperUserListView
 from rest_framework.authtoken.views import obtain_auth_token
 from users import views as user_views
 
@@ -16,6 +17,7 @@ urlpatterns = [
     # API routes
     path('api/token/', obtain_auth_token),
     path('api/', include('books.urls')),
+    path('api/superusers/', SuperUserListView.as_view()),
 
     # blog app (frontend routes)
     path('', include('blog.urls')),
